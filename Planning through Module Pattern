@@ -1,0 +1,21 @@
+To Do:
+
+add event handler
+get input values
+add the new item to our data structure
+add the new item to the UI
+calculate budget
+update UI
+
+
+UI Module:
+get input values
+add the new item to the UI
+update the UI
+
+Data Module:
+Add the new item to our data structure
+calculate budget
+
+controller module:
+add event handler
