@@ -41,13 +41,11 @@ var budgetController = (function() {
       data.totals[type] = sum;
     };
 
+// JSON.stringify()
 
     var allExpenses = [];
     var allIncomes = [];
     var totalExpenses = 0;
- 
-    // JSON.stringify() to be used for downloading this data in JSON future! 
-
     var data = {
         allItems: {
           exp: [],
@@ -62,7 +60,21 @@ var budgetController = (function() {
 
     };
 
+
+
   return {
+
+    dataToStr: function() {
+
+      var strData = JSON.stringify(data);
+      return strData;
+
+    },
+
+    rtnData: function() {
+      return data;
+    },
+
     addItem: function(type, des, val) {
         var newItem, iD;
 
@@ -105,9 +117,18 @@ var budgetController = (function() {
 
 
       }
+      },
+
+//    downloadData: function() {
+//      var dataStr, dlAnchorElem
+
+//      dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data));
+//      dlAnchorElem.setAttribute("href",     dataStr     );
+//      dlAnchorElem.setAttribute("download", "scene.json");
+
+//    },
 
 
-    },
 
     calculateBudget: function() {
 
@@ -191,7 +212,8 @@ var UIController = (function() {
         percentageLabel: '.budget__expenses--percentage',
         container:'.container',
         expensesPercLebel: '.item__percentage',
-        dateLabel: '.budget__title--month'
+        dateLabel: '.budget__title--month',
+        download: '#dwn__btn'
 
     };
 
@@ -350,6 +372,8 @@ var UIController = (function() {
 
       },
 
+
+
       changedType: function() {
 
         var fields = document.querySelectorAll(
@@ -392,11 +416,37 @@ var controller = (function(budgetCtrl, UICtrl) {
           }
 
         });
+
         document.querySelector(DOM.container).addEventListener('click', ctrlDeleteItem);
 
         document.querySelector(DOM.inputType).addEventListener('change', UICtrl.changedType);
 
+        document.querySelector(DOM.download).addEventListener('click', downloadData);
+
+
+
+
+
       };
+
+      var downloadData = function() {
+
+        var data = budgetCtrl.dataToStr()
+
+          var element = document.createElement('a');
+          element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(data));
+          element.setAttribute('download', 'BudgetyData.json');
+
+          element.style.display = 'none';
+          document.body.appendChild(element);
+
+          element.click();
+
+          document.body.removeChild(element);
+
+      };
+
+
 
       var updateBudget = function() {
 
@@ -470,6 +520,7 @@ var controller = (function(budgetCtrl, UICtrl) {
 
             //4. calculate and update percentages
             updatePercentages();
+
 
           }
       };
