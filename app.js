@@ -41,11 +41,13 @@ var budgetController = (function() {
       data.totals[type] = sum;
     };
 
-// JSON.stringify()
 
     var allExpenses = [];
     var allIncomes = [];
     var totalExpenses = 0;
+ 
+    // JSON.stringify() to be used for downloading this data in JSON future! 
+
     var data = {
         allItems: {
           exp: [],
