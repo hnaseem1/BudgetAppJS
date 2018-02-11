@@ -41,6 +41,7 @@ var budgetController = (function() {
       data.totals[type] = sum;
     };
 
+// JSON.stringify()
 
     var allExpenses = [];
     var allIncomes = [];
@@ -215,7 +216,15 @@ var UIController = (function() {
 
       return (type === 'exp' ? '-' : '+') + ' ' + int + '.' + dec;
 
-    }
+    };
+
+    var nodeListForEach = function(list, callback) {
+
+      for(var i = 0; i < list.length; i++) {
+        callback(list[i], i);
+      }
+    };
+
 
     return {
 
@@ -306,13 +315,8 @@ var UIController = (function() {
 
         var fields = document.querySelectorAll(DOMstrings.expensesPercLebel);
 
-        var nodeListForEach = function(list, callback) {
 
-          for(var i = 0; i < list.length; i++) {
-            callback(list[i], i);
-          }
 
-        };
         nodeListForEach(fields, function(current, index) {
 
           if (percentages[index] > 0 ) {
@@ -344,6 +348,23 @@ var UIController = (function() {
 
       },
 
+      changedType: function() {
+
+        var fields = document.querySelectorAll(
+          DOMstrings.inputType + ',' + DOMstrings.inputDesc + ',' + DOMstrings.inputValue
+        )
+
+        nodeListForEach(fields, function(cur) {
+
+          cur.classList.toggle('red-focus');
+
+
+        });
+
+        document.querySelector(DOMstrings.inputBtn).classList.toggle('red')
+
+      },
+
       getDOMstrings: function() {
         return DOMstrings;
       }
@@ -370,6 +391,9 @@ var controller = (function(budgetCtrl, UICtrl) {
 
         });
         document.querySelector(DOM.container).addEventListener('click', ctrlDeleteItem);
+
+        document.querySelector(DOM.inputType).addEventListener('change', UICtrl.changedType);
+
       };
 
       var updateBudget = function() {
